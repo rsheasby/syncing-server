@@ -1,7 +1,7 @@
 class ArchiveMailer < ApplicationMailer
   attr_accessor :event_publisher
 
-  default from: 'Standard Notes <backups@standardnotes.org>'
+  default from: "Standard Notes <#{ENV['EMAIL_FROM_ADDRESS']}>"
 
   def initialize
     super
@@ -39,6 +39,7 @@ class ArchiveMailer < ApplicationMailer
     attachments["SN-Data-#{date}.txt"] = {
       mime_type: 'application/json',
       content: json_data,
+      encoding: 'base64',
     }
     @email = user.email
     mail(to: @email, subject: "Data Backup for #{date}")
